@@ -2,6 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'bloc/auth_bloc.dart';
+import 'utils/app_fonts.dart';
+import 'utils/string_utils.dart';
+
 class Dashboard extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _DashboardState();
@@ -12,14 +16,39 @@ class _DashboardState extends State<Dashboard> {
     await Future.delayed(
       const Duration(seconds: 5),
     );
-    return 'https://images.igdb.com/igdb/image/upload/t_cover_big/ss6bi7081my4mzebjkzb.png';
+    return 'https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvam9iNjg0LTI0NS12LmpwZw.jpg?w=500';
   }
-
 
   @override
   Widget build(BuildContext context) {
+    final authBloc = AuthBloc();
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          "Dashboard",
+          style: retrieveRequiredFonts(
+            AppFonts.title,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              authBloc.localStorage.setBool(
+                StringUtils.isUserLoggedInKey,
+                false,
+              );
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/login',
+                ModalRoute.withName('/'),
+              );
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -50,7 +79,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               Expanded(
                 child: GridView.builder(
-                  itemCount: 20,
+                  itemCount: 20, // dynamic user data
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                   ),

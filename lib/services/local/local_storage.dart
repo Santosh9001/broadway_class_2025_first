@@ -1,9 +1,19 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
+  // singleton class instance 
+  static final LocalStorage _instance = LocalStorage._internal();
   SharedPreferences? sharedPreferences;
 
-  void getSharedPreferences() async {
+  // factory constructor 
+  factory LocalStorage() {
+    return _instance;
+  }
+  
+  // internal method of LocalStorage
+  LocalStorage._internal();
+
+  Future<void> init() async {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 

@@ -1,7 +1,9 @@
 import 'package:boroadwy_2025_session1/bloc/auth_bloc.dart';
 import 'package:boroadwy_2025_session1/forgot_password.dart';
+import 'package:boroadwy_2025_session1/services/local/local_database.dart';
 import 'package:boroadwy_2025_session1/services/local/local_storage.dart';
 import 'package:boroadwy_2025_session1/signup.dart';
+import 'package:boroadwy_2025_session1/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,18 +11,20 @@ import 'confirm_OTP.dart';
 import 'dashboard.dart';
 import 'login.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalStorage().init();
+  await LocalDatabase().init();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  LocalStorage localStorage = LocalStorage();
+  final localStorage = LocalStorage();
+  // final db = LocalDatabase();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    localStorage.getSharedPreferences();
-    debugPrint('${localStorage.getBool("userLoggedIn")}');
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -43,7 +47,7 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        home: localStorage.getBool("userLoggedIn") ? Dashboard() : Login(),
+        home: localStorage.getBool(StringUtils.isUserLoggedInKey) ? Dashboard() : Login(),
       ),
     );
   }

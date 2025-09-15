@@ -12,3 +12,5 @@ class SignupState extends AuthState {}
 class ForgotPasswordState extends AuthState {}
 
 class SigninState extends AuthState {}
+
+class AuthErrorState extends AuthState {}

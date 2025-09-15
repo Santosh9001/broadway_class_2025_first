@@ -3,8 +3,10 @@ import 'package:boroadwy_2025_session1/bloc/auth_event.dart';
 import 'package:boroadwy_2025_session1/bloc/auth_state.dart';
 import 'package:boroadwy_2025_session1/components/button_component.dart';
 import 'package:boroadwy_2025_session1/components/text_inputs.dart';
+import 'package:boroadwy_2025_session1/services/local/local_database.dart';
 import 'package:boroadwy_2025_session1/signup.dart';
 import 'package:boroadwy_2025_session1/utils/app_fonts.dart';
+import 'package:boroadwy_2025_session1/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,23 +15,23 @@ import 'services/local/local_storage.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
-  LocalStorage localStorage = LocalStorage();
+  // var database = LocalDatabase();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool obscureText = true;
   @override
   Widget build(BuildContext context) {
-    localStorage.getSharedPreferences();
     return BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is ForgotPasswordState) {
             Navigator.pushNamed(context, '/forgotPassword');
+            context.read<AuthBloc>().database.retrieveUsers();
           } else if (state is SignupState) {
-            Navigator.pushNamed(
-              context,
-              '/signup',
-              arguments: {"id": "this is sample id"}, // ModalRoute
-            );
+            // Navigator.pushNamed(
+            //   context,
+            //   '/signup',
+            //   arguments: {"id": "this is sample id"}, // ModalRoute
+            // );
           }
         },
         child: Scaffold(
@@ -145,7 +147,10 @@ class Login extends StatelessWidget {
                   ButtonComponent(
                     buttonText: "Sign in",
                     onButtonPressed: () {
-                      localStorage.setBool("userLoggedIn", true);
+                      context.read<AuthBloc>().localStorage.setBool(
+                            StringUtils.isUserLoggedInKey,
+                            true,
+                          );
                       Navigator.pushNamed(context, '/dashboard');
                     },
                   ),
@@ -161,7 +166,7 @@ class Login extends StatelessWidget {
                   Center(
                     child: InkWell(
                       onTap: () {
-                        context.read<AuthBloc>().add(SignupEvent());
+                        Navigator.pushNamed(context, '/signup');
                       },
                       child: RichText(
                         text: TextSpan(
