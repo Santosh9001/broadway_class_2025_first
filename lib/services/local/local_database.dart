@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../models/products.dart';
+
 class LocalDatabase {
   // Database ORM
   static final LocalDatabase _localDatabase = LocalDatabase._internal();
@@ -31,16 +33,30 @@ class LocalDatabase {
     String userTable = '''
         create table if not exists user (id int primary_key, name varchar(30), email varchar(30));
       ''';
-    String categoryTable = '''
-
+    String productsTable = '''
+        create table if not exists products(id int primary_key auto_increment, name varchar(30),
+        category varchar(30), price decimal(4,2));
     ''';
+
     await db.execute(userTable);
-    // await db.execute(categoryTable);
+    await db.execute(productsTable);
   }
 
   Future<int> insertUser(String name, String email) async {
     var value = {'name': name, 'email': email};
     return await _database.insert('user', value);
+  }
+
+  Future<void> insertProducts() async {
+    for (Map<String, dynamic> values in getProducts()) {
+      await _database.insert('products', values);
+    }
+  }
+
+  Future<List<Products>> retrieveProductsByCategory(String name) async {
+    var datas = await _database
+        .query('products', where: 'category=?', whereArgs: [name]);
+    return datas.map((element) => Products.fromJson(element)).toList();
   }
 
   Future<List<User>> retrieveUsers() async {
@@ -52,10 +68,20 @@ class LocalDatabase {
       userList.add(User.fromJson(json));
     }
 
-    // Single line loop conversion 
+    // Single line loop conversion
     // datas.map((element) => User.fromJson(element)).toList();
 
     debugPrint("$userList");
     return userList;
+  }
+
+  dynamic getProducts() {
+    var products = [
+      {'name': 'Basmati', 'price': 20.22, 'category': 'Rice'},
+      {'name': 'Moong', 'price': 20.22, 'category': 'Dal'},
+      {'name': 'Chips', 'price': 20.22, 'category': 'Snacks'},
+      {'name': 'Chana', 'price': 20.22, 'category': 'Dal'}
+    ];
+    return products;
   }
 }

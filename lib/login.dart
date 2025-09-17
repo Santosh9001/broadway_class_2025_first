@@ -147,6 +147,7 @@ class Login extends StatelessWidget {
                   ButtonComponent(
                     buttonText: "Sign in",
                     onButtonPressed: () {
+                      context.read<AuthBloc>().database.insertProducts();
                       context.read<AuthBloc>().localStorage.setBool(
                             StringUtils.isUserLoggedInKey,
                             true,

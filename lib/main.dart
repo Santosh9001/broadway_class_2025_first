@@ -1,4 +1,5 @@
 import 'package:boroadwy_2025_session1/bloc/auth_bloc.dart';
+import 'package:boroadwy_2025_session1/bloc/dashboard_bloc.dart';
 import 'package:boroadwy_2025_session1/forgot_password.dart';
 import 'package:boroadwy_2025_session1/services/local/local_database.dart';
 import 'package:boroadwy_2025_session1/services/local/local_storage.dart';
@@ -6,6 +7,7 @@ import 'package:boroadwy_2025_session1/signup.dart';
 import 'package:boroadwy_2025_session1/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:splash_master/splash_master.dart';
 
 import 'confirm_OTP.dart';
 import 'dashboard.dart';
@@ -13,8 +15,10 @@ import 'login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SplashMaster.initialize();
   await LocalStorage().init();
   await LocalDatabase().init();
+  SplashMaster.resume();
   runApp(MyApp());
 }
 
@@ -29,6 +33,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => AuthBloc(),
+        ),
+        BlocProvider(
+          create: (_) => DashboardBloc(),
         ),
       ],
       child: MaterialApp(
