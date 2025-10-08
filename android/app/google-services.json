@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "853909884932",
+    "project_id": "broadway-infosys",
+    "storage_bucket": "broadway-infosys.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853909884932:android:dda277430b6b982325e551",
+        "android_client_info": {
+          "package_name": "com.example.boroadwy_2025_session1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqMIVQULC-ESyyDIyLXZNxThIUA3BuyLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

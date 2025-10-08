@@ -10,3 +10,5 @@ class ProductFetchedState extends DashboardState {
 }
 
 class ErrorState extends DashboardState {}
+
+class FetchedPostsState extends DashboardState{}

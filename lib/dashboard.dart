@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:boroadwy_2025_session1/bloc/dashboard_bloc.dart';
 import 'package:boroadwy_2025_session1/bloc/dashboard_event.dart';
 import 'package:boroadwy_2025_session1/bloc/dashboard_state.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +20,7 @@ class Dashboard extends StatelessWidget {
     await Future.delayed(
       const Duration(seconds: 5),
     );
-    return 'https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvam9iNjg0LTI0NS12LmpwZw.jpg?w=500';
+    return 'https://via.placeholder.com/600/92c952';
   }
 
   List<String> categories = [
@@ -29,6 +34,8 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<DashboardBloc>().add(FetchPostEvents());
+    final authBloc = context.read<AuthBloc>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -41,7 +48,8 @@ class Dashboard extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
               context.read<AuthBloc>().localStorage.setBool(
                     StringUtils.isUserLoggedInKey,
                     false,
@@ -54,6 +62,21 @@ class Dashboard extends StatelessWidget {
             },
             icon: Icon(Icons.logout),
           ),
+          IconButton(
+              onPressed: () async {
+                final db = FirebaseFirestore.instance;
+                // int i = 0;
+                // for (Map<String, dynamic> datas
+                //     in authBloc.database.getProducts()) {
+                //   i++;
+                //   db.collection("products").doc("$i").set(datas);
+                // }
+
+                db.collection('products').doc('1').get().then((value) {
+                  print(value.data());
+                });
+              },
+              icon: Icon(Icons.storage))
         ],
       ),
       body: SafeArea(

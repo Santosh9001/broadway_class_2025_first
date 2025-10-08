@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAjvootXLQ_zJa52FGdYzHuU4nsc7hHMdw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>853909884932</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.boroadwy2025Session1</string>
+	<key>PROJECT_ID</key>
+	<string>broadway-infosys</string>
+	<key>STORAGE_BUCKET</key>
+	<string>broadway-infosys.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:853909884932:ios:097ea6a7a699b50825e551</string>
+</dict>
+</plist>

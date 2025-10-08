@@ -7,9 +7,12 @@ import 'package:boroadwy_2025_session1/services/local/local_database.dart';
 import 'package:boroadwy_2025_session1/signup.dart';
 import 'package:boroadwy_2025_session1/utils/app_fonts.dart';
 import 'package:boroadwy_2025_session1/utils/string_utils.dart';
+import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'services/local/local_storage.dart';
 
@@ -146,13 +149,26 @@ class Login extends StatelessWidget {
                   ),
                   ButtonComponent(
                     buttonText: "Sign in",
-                    onButtonPressed: () {
+                    onButtonPressed: () async {
+                      try {
+                        final credential = await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: 'test@gmail.com', password: '123456');
+                        print("${credential.user!.email}");
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          print('No user found for that email.');
+                        } else if (e.code == 'wrong-password') {
+                          print('Wrong password provided for that user.');
+                        }
+                      }
                       context.read<AuthBloc>().database.insertProducts();
                       context.read<AuthBloc>().localStorage.setBool(
                             StringUtils.isUserLoggedInKey,
                             true,
                           );
-                      Navigator.pushNamed(context, '/dashboard');
+                      // Navigator.pushNamed(context, '/dashboard');
+                      checkAndRequestPermission();
                     },
                   ),
                   Padding(
@@ -201,4 +217,33 @@ class Login extends StatelessWidget {
   //     obscureText = true;
   //   }
   // }
+}
+
+void checkAndRequestPermission() async {
+  var status = await Permission.camera.status;
+  var lStatus = await Permission.location.status;
+  var storage = await Permission.storage.status;
+  if (status.isDenied) {
+    await Permission.camera.request();
+  } else if (status.isGranted) {
+    CameraController controller = CameraController(
+      CameraDescription(
+          name: "",
+          lensDirection: CameraLensDirection.back,
+          sensorOrientation: 0),
+      ResolutionPreset.medium,
+    );
+    controller.initialize();
+  }
+// You can also directly ask permission about its status.
+  if (await Permission.camera.isRestricted) {
+    // The OS restricts access, for example, because of parental controls. send the app to settings
+    print("Permanently restricted");
+    openAppSettings();
+  }
+  if (await Permission.camera.isDenied) {
+    print("is denied permission");
+    openAppSettings();
+  }
+  // openAppSettings();
 }

@@ -5,6 +5,7 @@ import 'package:boroadwy_2025_session1/services/local/local_database.dart';
 import 'package:boroadwy_2025_session1/services/local/local_storage.dart';
 import 'package:boroadwy_2025_session1/signup.dart';
 import 'package:boroadwy_2025_session1/utils/string_utils.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:splash_master/splash_master.dart';
@@ -16,6 +17,13 @@ import 'login.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SplashMaster.initialize();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+        apiKey: "AIzaSyAjvootXLQ_zJa52FGdYzHuU4nsc7hHMdw",
+        appId: "1:853909884932:ios:097ea6a7a699b50825e551",
+        messagingSenderId: "853909884932",
+        projectId: "broadway-infosys"),
+  );
   await LocalStorage().init();
   await LocalDatabase().init();
   SplashMaster.resume();
@@ -54,7 +62,10 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        home: localStorage.getBool(StringUtils.isUserLoggedInKey) ? Dashboard() : Login(),
+        // TODO Students, check if the user is signed in 
+        home: localStorage.getBool(StringUtils.isUserLoggedInKey)
+            ? Dashboard()
+            : Login(),
       ),
     );
   }

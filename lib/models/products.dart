@@ -21,6 +21,7 @@ class Products {
       category: json['category'] as String?,
     );
   }
+  
   Map<String, dynamic> toJson(Products product) {
     Map<String, dynamic> json = {};
     json['name'] = product.name;

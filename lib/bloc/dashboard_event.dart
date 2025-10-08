@@ -4,3 +4,5 @@ class CategoryItemClickEvent extends DashboardEvent {
   String name;
   CategoryItemClickEvent(this.name);
 }
+
+class FetchPostEvents extends DashboardEvent {}

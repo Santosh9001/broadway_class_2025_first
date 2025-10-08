@@ -1,4 +1,6 @@
 import 'package:boroadwy_2025_session1/bloc/dashboard_state.dart';
+import 'package:boroadwy_2025_session1/services/api/api_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../services/local/local_database.dart';
@@ -9,6 +11,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final localStorage = LocalStorage();
   final database = LocalDatabase();
   DashboardBloc() : super(DasboardInitial()) {
+    final apiService = ApiService();
     on<CategoryItemClickEvent>((event, emit) async {
       var productList = await database.retrieveProductsByCategory(event.name);
       if (productList.isEmpty) {
@@ -17,5 +20,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         emit(ProductFetchedState(productList));
       }
     });
+
+    on<FetchPostEvents>(
+      (event, emit) async {
+        var response = await apiService.getPostsApiHttp();
+      },
+    );
   }
 }

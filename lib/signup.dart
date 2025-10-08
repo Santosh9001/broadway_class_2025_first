@@ -6,6 +6,7 @@ import 'package:boroadwy_2025_session1/components/text_inputs.dart';
 import 'package:boroadwy_2025_session1/login.dart';
 import 'package:boroadwy_2025_session1/models/user.dart';
 import 'package:boroadwy_2025_session1/utils/app_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -185,7 +186,7 @@ class Signup extends StatelessWidget {
     );
   }
 
-  void _checkAndSignupUser(BuildContext context) {
+  void _checkAndSignupUser(BuildContext context) async {
     String name = nameController.text;
     String email = emailController.text;
     String pass = passwordController.text;
@@ -196,6 +197,21 @@ class Signup extends StatelessWidget {
         message: "Please check your required fields",
         state: 'error',
       );
+      try {
+        final credential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: 'test@gmail.com',
+          password: '123456',
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
+      }
       return;
     } else if (pass != cPass) {
       // TODO make this a component
@@ -206,13 +222,13 @@ class Signup extends StatelessWidget {
       );
       return;
     } else {
-      User user = User(
-        name: name,
-        email: email,
-        password: pass,
-        confirmPassword: cPass,
-      );
-      context.read<AuthBloc>().add(SignupEvent(user));
+      // User user = User(
+      //   name: name,
+      //   email: email,
+      //   password: pass,
+      //   confirmPassword: cPass,
+      // );
+      // context.read<AuthBloc>().add(SignupEvent(user));
 
       // Forward it to service or state-managemet so that it can be passed to db
     }

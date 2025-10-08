@@ -76,6 +76,7 @@ class LocalDatabase {
   }
 
   dynamic getProducts() {
+    // List<Map<String,dynamic>> productList 
     var products = [
       {'name': 'Basmati', 'price': 20.22, 'category': 'Rice'},
       {'name': 'Moong', 'price': 20.22, 'category': 'Dal'},
