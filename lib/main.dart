@@ -1,6 +1,8 @@
+import 'package:boroadwy_2025_session1/animated_container.dart';
 import 'package:boroadwy_2025_session1/bloc/auth_bloc.dart';
 import 'package:boroadwy_2025_session1/bloc/dashboard_bloc.dart';
 import 'package:boroadwy_2025_session1/forgot_password.dart';
+import 'package:boroadwy_2025_session1/hero_animation_one.dart';
 import 'package:boroadwy_2025_session1/services/local/local_database.dart';
 import 'package:boroadwy_2025_session1/services/local/local_storage.dart';
 import 'package:boroadwy_2025_session1/signup.dart';
@@ -64,7 +66,7 @@ class MyApp extends StatelessWidget {
         ),
         // TODO Students, check if the user is signed in 
         home: localStorage.getBool(StringUtils.isUserLoggedInKey)
-            ? Dashboard()
+            ? HeroAnimationOne()
             : Login(),
       ),
     );
