@@ -4,6 +4,7 @@ import 'package:boroadwy_2025_session1/bloc/auth_state.dart';
 import 'package:boroadwy_2025_session1/components/button_component.dart';
 import 'package:boroadwy_2025_session1/components/text_inputs.dart';
 import 'package:boroadwy_2025_session1/services/local/local_database.dart';
+import 'package:boroadwy_2025_session1/services/notification_service.dart';
 import 'package:boroadwy_2025_session1/signup.dart';
 import 'package:boroadwy_2025_session1/utils/app_fonts.dart';
 import 'package:boroadwy_2025_session1/utils/string_utils.dart';
@@ -25,7 +26,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is ForgotPasswordState) {
             Navigator.pushNamed(context, '/forgotPassword');
             context.read<AuthBloc>().database.retrieveUsers();
@@ -35,7 +36,7 @@ class Login extends StatelessWidget {
             //   '/signup',
             //   arguments: {"id": "this is sample id"}, // ModalRoute
             // );
-          }
+          } 
         },
         child: Scaffold(
           backgroundColor: Colors.white,

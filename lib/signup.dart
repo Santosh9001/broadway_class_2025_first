@@ -5,6 +5,7 @@ import 'package:boroadwy_2025_session1/components/snackbar_component.dart';
 import 'package:boroadwy_2025_session1/components/text_inputs.dart';
 import 'package:boroadwy_2025_session1/login.dart';
 import 'package:boroadwy_2025_session1/models/user.dart';
+import 'package:boroadwy_2025_session1/services/notification_service.dart';
 import 'package:boroadwy_2025_session1/utils/app_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,10 @@ class Signup extends StatelessWidget {
           showSnackbarComponent(context, message: 'Error signup user');
         }
       }, builder: (context, state) {
+        if (state is AuthInitial) {
+          final notificationService = context.read<NotificationService>();
+          notificationService.initialize();
+        }
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
