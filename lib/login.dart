@@ -25,6 +25,7 @@ class Login extends StatelessWidget {
   bool obscureText = true;
   @override
   Widget build(BuildContext context) {
+    context.read<NotificationService>().initialize();
     return BlocListener<AuthBloc, AuthState>(
         listener: (context, state) async {
           if (state is ForgotPasswordState) {
@@ -36,7 +37,7 @@ class Login extends StatelessWidget {
             //   '/signup',
             //   arguments: {"id": "this is sample id"}, // ModalRoute
             // );
-          } 
+          }
         },
         child: Scaffold(
           backgroundColor: Colors.white,
@@ -224,6 +225,7 @@ void checkAndRequestPermission() async {
   var status = await Permission.camera.status;
   var lStatus = await Permission.location.status;
   var storage = await Permission.storage.status;
+  await Permission.notification.request();
   if (status.isDenied) {
     await Permission.camera.request();
   } else if (status.isGranted) {

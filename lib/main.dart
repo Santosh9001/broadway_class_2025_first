@@ -21,6 +21,7 @@ import 'login.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
   print('message handling background');
 }
 
@@ -34,6 +35,8 @@ void main() async {
         messagingSenderId: "853909884932",
         projectId: "broadway-infosys"),
   );
+  // Register background handler
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // load crashalytics here
   await LocalStorage().init();
   await LocalDatabase().init();
@@ -81,7 +84,7 @@ class MyApp extends StatelessWidget {
           ),
           // TODO Students, check if the user is signed in
           home: localStorage.getBool(StringUtils.isUserLoggedInKey)
-              ? BoxAnimationEg()
+              ? Login()
               : Login(),
         ),
       ),
